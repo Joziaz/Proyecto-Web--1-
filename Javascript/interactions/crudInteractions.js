@@ -14,7 +14,7 @@ function setUsersInTable() {
                 <td> ${contact.id} </td>
                 <td> ${contact.firstName} </td>
                 <td> ${contact.lastName} </td>
-                <td> ${contact.email} </td>
+                <td> <a href="mailto:${contact.email}">${contact.email}</a> </td>
                 <td>
                     <button class="btn btn-warning" data-contact="${contact.id}" >Delete</button>
                 </td>
@@ -31,7 +31,7 @@ tableBody.addEventListener("click", (e) => {
     const id = e.target.getAttribute("data-contact")
 
     if (!id) return
-    
+
     contactService.delete(id)
 
     setUsersInTable()
