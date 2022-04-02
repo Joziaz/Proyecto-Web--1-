@@ -5,24 +5,28 @@ class ContactService {
         this.repository = new Repository()
     }
 
-    static createId() {
-        if(!this.lastId)
-            this.lastId = 0
-
-        this.lastId += 1
-        return this.lastId
-    }
-
     get() {
-        return this.repository.getItem("contacts")
+        return this.repository.getItem("contacts") ?? []
     }
 
     insert(contact = new Contact()) {
-        contact.id = ContactService.createId()
-        this.repository.insert("contacts", contact)
+        const contacts = this.get()
+        
+        
+        contacts.length > 0 
+         ? contact.id = contacts[contacts.length - 1].id + 1
+         : contact.id = 0
+
+        contacts.push(contact)
+        this.repository.insert("contacts", contacts)
     }
 
-    delete(key) {
-        this.repository.delete(key)
+    delete(contactId) {
+        const contacts = this.repository.getItem("contacts")
+        const newContacts = contacts.filter((contact) => {
+            return contact.id != contactId
+        })
+
+        this.repository.insert("contacts",newContacts)
     }
 }
